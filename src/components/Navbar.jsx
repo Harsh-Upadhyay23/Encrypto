@@ -6,7 +6,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <nav className="bg-purple-600 text-white shadow-md">
+    <nav className="bg-slate-600 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold tracking-wide">
@@ -23,9 +23,9 @@ const Navbar = () => {
 
         {/* Profile / Login */}
         <div className="hidden md:block">
-          <Link to="/login">
-            <button className="bg-yellow-300 text-purple-800 px-4 py-2 rounded-xl font-semibold hover:bg-yellow-400 transition">
-              Login
+          <Link to="https://github.com/Harsh-Upadhyay23">
+            <button className=" bg-white text-purple-800 px-2 py-1 rounded-xl font-semibold hover:bg-yellow-400 transition">
+              <img width={25} src="/public/icons/github.svg" alt="" />
             </button>
           </Link>
         </div>
@@ -41,7 +41,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-purple-700 px-6 py-4 space-y-3">
+        <div className="md:hidden bg-slate-600 px-6 py-4 space-y-3">
           <Link to="/" className="block hover:text-yellow-300">Home</Link>
           <Link to="/features" className="block hover:text-yellow-300">Features</Link>
           <Link to="/about" className="block hover:text-yellow-300">About</Link>

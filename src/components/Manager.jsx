@@ -1,83 +1,151 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Manager = () => {
-    const [show, setShow] = useState(false);
-    const [form, setform] = useState({ site: "", username: "", password: "" });
+  const [show, setShow] = useState(false);
+  const [form, setForm] = useState({ site: "", username: "", password: "" });
+  const [passwordArray, setPasswordArray] = useState([]);
 
-    const showpassword = () => {
-        setShow((prev) => !prev);
-    };
-
-    const savePassword = () => {
-
+  useEffect(() => {
+    let passwords = localStorage.getItem("passwords");
+    if (passwords) {
+      setPasswordArray(JSON.parse(passwords));
     }
-    const handleChange=(e)=>{
-        setform({...form,[e.target.name]:e.target.value});
+  }, []);
 
-    }
+  const showPassword = () => setShow((prev) => !prev);
 
-    return (
-        <>
-            <div className="absolute inset-0 -z-10 h-full w-full bg-green-50 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"><div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]"></div></div>
+  const savePassword = () => {
+    if (!form.site || !form.username || !form.password) return; // avoid empty save
+    const updated = [...passwordArray, form];
+    setPasswordArray(updated);
+    localStorage.setItem("passwords", JSON.stringify(updated));
+    setForm({ site: "", username: "", password: "" }); // reset input after save
+  };
 
-            {/* Content */}
-            <div className="flex justify-center items-center ">
-                <div className="w-full max-w-3xl p-5 bg-green-50 rounded-2xl shadow-lg border border-gray-100">
-                    <div className="text-center mb-10">
-                        <h1 className="text-4xl font-bold text-blue-600">
-                            &lt;<span className="text-gray-800">Pass</span>
-                            <span className="text-green-500">OP</span>/&gt;
-                        </h1>
-                        <p className="mt-2 text-gray-500 text-lg">
-                            Your own Password Manager
-                        </p>
-                    </div>
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-                    {/* Compact Form Row */}
-                    <input
-                        type="text" onChange={e=>handleChange(e)}
-                        value={form.site}
-                        name="site"
-                        placeholder="Enter website URL"
-                        className="flex-1 px-1  rounded-md bg-blue-50 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-gray-400 text-sm
-              w-full py-2 my-1"
-                    />
-                    <div className="flex gap-4 justify-center w-full">
+  return (
+    <>
+    
+      {/* Page Content */}
+      <div className="flex flex-col items-center justify-start min-h-screen px-4 pt-10">
+        {/* Form Card */}
+        <div className="w-full max-w-3xl p-6 bg-white rounded-2xl shadow-xl border border-gray-200">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-blue-600">
+              Add New Password
+            </h2>
+            <p className="mt-2 text-gray-500 text-lg">
+              Save and manage your passwords easily
+            </p>
+          </div>
 
-                        <input 
-                            type="text"
-                            name="username"
-                            value={form.username}
-                            onChange={e=>handleChange(e)}
-                            placeholder="Enter username"
-                            className=" px-3 py-2 rounded-md bg-green-50 border border-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 placeholder-gray-400 text-sm"
-                        />
-                        <div className="relative ">
-                            <input 
-                                name="password"
-                                value={form.password} onChange={e=>handleChange(e)}
-                                type={show ? "text" : "password"}
-                                placeholder="Enter Password"
-                                className=" px-3 py-2 rounded-md bg-purple-50 border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300 placeholder-gray-400 text-sm"
-                            />
-                            <span className="absolute right-0 top-0" onClick={showpassword} onChange={handleChange}><img className="px-1 py-2 " width={28} src={show ? "/icons/eyecross.png" : "/icons/eye.png"} alt="eye" /></span>
-                        </div>
-
-
-
-                        <button onClick={savePassword} className="flex rounded-full bg-green-500 px-2 py-1 justify-center items-center hover:bg-green-300">
-                            <lord-icon
-                                src="https://cdn.lordicon.com/jgnvfzqg.json"
-                                trigger="hover">
-                            </lord-icon>
-                            Add Password
-                        </button>
-                    </div>
-                </div>
+          {/* Form Inputs */}
+          <input
+            type="text"
+            onChange={handleChange}
+            value={form.site}
+            name="site"
+            placeholder="Enter website URL"
+            className="w-full px-3 py-2 mb-3 rounded-md bg-blue-50 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-gray-400 text-sm"
+          />
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              placeholder="Enter username"
+              className="flex-1 px-3 py-2 rounded-md bg-green-50 border border-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 placeholder-gray-400 text-sm"
+            />
+            <div className="relative flex-1">
+              <input
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                type={show ? "text" : "password"}
+                placeholder="Enter Password"
+                className="w-full px-3 py-2 rounded-md bg-purple-50 border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300 placeholder-gray-400 text-sm"
+              />
+              <span
+                className="absolute right-2 top-2 cursor-pointer"
+                onClick={showPassword}
+              >
+                <img
+                  width={24}
+                  src={show ? "/icons/eyecross.png" : "/icons/eye.png"}
+                  alt="eye"
+                />
+              </span>
             </div>
-        </>
-    );
+            <button
+              onClick={savePassword}
+              className="flex items-center gap-1 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-500"
+            >
+              <lord-icon
+                src="https://cdn.lordicon.com/jgnvfzqg.json"
+                trigger="hover"
+                style={{ width: "22px", height: "22px" }}
+              ></lord-icon>
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* Passwords Table */}
+        <div className="w-full max-w-4xl mt-10 mb-20">
+          <h2 className="font-bold text-2xl py-4 text-center text-gray-800">
+            Your Passwords
+          </h2>
+          {passwordArray.length === 0 ? (
+            <div className="text-center text-gray-500">
+              No passwords to show
+            </div>
+          ) : (
+            <div className="overflow-x-auto shadow-lg rounded-lg">
+              <table className="table-auto w-full text-sm">
+                <thead className="bg-green-700 text-white">
+                  <tr>
+                    <th className="py-2">Site</th>
+                    <th className="py-2">Username</th>
+                    <th className="py-2">Password</th>
+                    <th className="py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-green-50 text-gray-800">
+                  {passwordArray.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="py-2 px-4 text-center">{item.site}</td>
+                      <td className="py-2 px-4 text-center">{item.username}</td>
+                      <td className="py-2 px-4 text-center">{item.password}</td>
+                      <td className="py-2 px-4 text-center flex justify-center gap-2">
+                        <span className="cursor-pointer">
+                          <lord-icon
+                            src="https://cdn.lordicon.com/gwlusjdu.json"
+                            trigger="hover"
+                            style={{ width: "25px", height: "25px" }}
+                          ></lord-icon>
+                        </span>
+                        <span className="cursor-pointer">
+                          <lord-icon
+                            src="https://cdn.lordicon.com/skkahier.json"
+                            trigger="hover"
+                            style={{ width: "25px", height: "25px" }}
+                          ></lord-icon>
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Manager;
