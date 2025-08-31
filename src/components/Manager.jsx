@@ -1,9 +1,10 @@
 import React from "react";
-import { useRef,useState } from "react";
+import { useState } from "react";
 
 const Manager = () => {
-    const ref=useRef();
     const [show, setShow] = useState(false);
+    const [form, setForm] = useState({site:"",username:"",password:""});
+
      const showpassword = () => {
     setShow((prev) => !prev);
   };
@@ -32,6 +33,7 @@ const Manager = () => {
                     {/* Compact Form Row */}
                     <input
                         type="text"
+                             value={form.site}
                         placeholder="Enter website URL"
                         className="flex-1 px-1  rounded-md bg-blue-50 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 placeholder-gray-400 text-sm
               w-full py-2 my-1"
@@ -40,16 +42,18 @@ const Manager = () => {
 
                         <input
                             type="text"
+                            value={form.username}
                             placeholder="Enter username"
                             className=" px-3 py-2 rounded-md bg-green-50 border border-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 placeholder-gray-400 text-sm"
                         />
                        <div className="relative ">
                          <input
+                              value={form.password}
                              type={show ? "text" : "password"}
                             placeholder="Enter Password"
                             className=" px-3 py-2 rounded-md bg-purple-50 border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300 placeholder-gray-400 text-sm"
                         />
-                        <span className="absolute right-0 top-0" onClick={(e)=>showpassword()}><img ref={ref} className="px-1 py-2 " width={28} src={show ? "/icons/eyecross.png" : "/icons/eye.png"}alt="eye" /></span>
+                        <span className="absolute right-0 top-0" onClick={showpassword}><img  className="px-1 py-2 " width={28} src={show ? "/icons/eyecross.png" : "/icons/eye.png"}alt="eye" /></span>
                        </div>
 
                        
