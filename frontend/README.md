@@ -13,10 +13,6 @@ A modern, secure password manager built with React that helps you store, manage,
 - **Toast Notifications** - Get instant feedback for all actions
 - **Modern UI/UX** - Clean, intuitive interface with smooth animations
 
-## 🚀 Demo
-
-![Encrypto Password Manager](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Encrypto+Password+Manager)
-
 ## 🛠️ Tech Stack
 
 - **Frontend**: React 18+
