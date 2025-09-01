@@ -36,7 +36,10 @@ function App() {
 
       {/* Manager Page */}
       <Manager />
-      <Footer/>
+    <div className=" bottom-0 left-0 w-full">
+  <Footer />
+</div>
+
     </Router>
   );
 }
