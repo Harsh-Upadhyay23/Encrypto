@@ -30,8 +30,8 @@ A modern, secure password manager built with React that helps you store, manage,
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Harsh-Upadhyay23/encrypto.git
-   cd encrypto
+   git clone https://github.com/Harsh-Upadhyay23/Encrypto.git
+   cd Encrypto
    ```
 
 2. **Install dependencies**
