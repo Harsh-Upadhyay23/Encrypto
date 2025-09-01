@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar"; 
 import Manager from "./components/Manager";
+import Footer from "./components/Footer";
 
 // Dummy pages
 const Home = () => <div className="p-6 text-2xl font-bold">Welcome to PassOp 🔐</div>;
@@ -35,6 +36,7 @@ function App() {
 
       {/* Manager Page */}
       <Manager />
+      <Footer/>
     </Router>
   );
 }

@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import { v4 as uuidv4 } from "uuid";
+
+
 
 const Manager = () => {
   const [show, setShow] = useState(false);
@@ -16,21 +20,51 @@ const Manager = () => {
 
   const savePassword = () => {
     if (!form.site || !form.username || !form.password) return; // avoid empty save
-    const updated = [...passwordArray, form];
+    const updated = [...passwordArray, { ...form, id: uuidv4() }];
     setPasswordArray(updated);
-    localStorage.setItem("passwords", JSON.stringify(updated));
+    localStorage.setItem("passwords", JSON.stringify([...passwordArray, { ...form, id: uuidv4() }]));
     setForm({ site: "", username: "", password: "" }); // reset input after save
+  };
+   const deletePassword = (id) => {
+    
   };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const copyText = (text) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        toast("Copied to clipboard: " + text)
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+  const editPassword = (e) => {
+    console.log(e);
+  }
+
 
   return (
     <>
-    
+
       {/* Page Content */}
-      <div className="flex flex-col items-center justify-start min-h-screen px-4 pt-10">
+
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+
+      />
+      <div className="flex flex-col items-center justify-start  px-4  m-auto w-1/2">
         {/* Form Card */}
         <div className="w-full max-w-3xl p-6 bg-white rounded-2xl shadow-xl border border-gray-200">
           <div className="text-center mb-8">
@@ -95,7 +129,7 @@ const Manager = () => {
         </div>
 
         {/* Passwords Table */}
-        <div className="w-full max-w-4xl mt-10 mb-20">
+        <div className="w-[100%] max-w-4xl ">
           <h2 className="font-bold text-2xl py-4 text-center text-gray-800">
             Your Passwords
           </h2>
@@ -118,32 +152,33 @@ const Manager = () => {
                   {passwordArray.map((item, index) => (
                     <tr key={index} className="border-b">
                       <td className="py-2 px-4 text-center">{item.site}</td>
-                      <td className="py-2 px-4 text-center">{item.username}</td>
-                      <td className="py-2 px-4 text-center">{item.password}</td>
+                      <td className="py-2 px-4 flex justify-center">{item.username} <span onClick={() => { copyText(item.username) }}><img width={20} src="/public/icons/3719119.png" alt="" /></span> </td>
+                      <td className="py-2 px-4 "><span className="flex">{item.password} <span onClick={() => { copyText(item.password) }}><img width={20} src="/public/icons/3719119.png" alt="" /></span> </span></td>
                       <td className="py-2 px-4 text-center flex justify-center gap-2">
-                        <span className="cursor-pointer">
-                          <lord-icon
-                            src="https://cdn.lordicon.com/gwlusjdu.json"
-                            trigger="hover"
-                            style={{ width: "25px", height: "25px" }}
-                          ></lord-icon>
-                        </span>
-                        <span className="cursor-pointer">
-                          <lord-icon
-                            src="https://cdn.lordicon.com/skkahier.json"
-                            trigger="hover"
-                            style={{ width: "25px", height: "25px" }}
-                          ></lord-icon>
-                        </span>
-                      </td>
+                        <span onClick={() => editPassword(item.id)}
+                          className="cursor-pointer">
+                        <lord-icon
+                          src="https://cdn.lordicon.com/gwlusjdu.json"
+                          trigger="hover"
+                          style={{ width: "25px", height: "25px" }}
+                        ></lord-icon>
+                      </span>
+                      <span onClick={() => deletePassword(item.id)} className="cursor-pointer">
+                        <lord-icon
+                          src="https://cdn.lordicon.com/skkahier.json"
+                          trigger="hover"
+                          style={{ width: "25px", height: "25px" }}
+                        ></lord-icon>
+                      </span>
+                    </td>
                     </tr>
                   ))}
-                </tbody>
-              </table>
+              </tbody>
+            </table>
             </div>
           )}
-        </div>
       </div>
+    </div >
     </>
   );
 };
